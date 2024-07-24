@@ -3,16 +3,15 @@ package dto;
 import java.util.Date;
 
 public class BoardDTO {
-
+	
 	private Long boardId;
 	private String writer;
 	private String email;
 	private String subject;
 	private String password;
 	private String content;
-	private long readCnt;
+	private Long readCnt;
 	private Date enrollDt;
-	
 	
 	public Long getBoardId() {
 		return boardId;
@@ -50,10 +49,10 @@ public class BoardDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public long getReadCnt() {
+	public Long getReadCnt() {
 		return readCnt;
 	}
-	public void setReadCnt(long readCnt) {
+	public void setReadCnt(Long readCnt) {
 		this.readCnt = readCnt;
 	}
 	public Date getEnrollDt() {

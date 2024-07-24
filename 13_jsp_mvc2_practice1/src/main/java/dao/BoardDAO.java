@@ -13,50 +13,46 @@ import dto.BoardDTO;
 
 public class BoardDAO {
 	
-	// 생성자
 	private BoardDAO() {}
-	// 고정 객체 생성
 	private static BoardDAO instance = new BoardDAO();
-	// 게터 메서드 생성
 	public static BoardDAO getInstance() {
 		return instance;
 	}
 	
-	// 데이터베이스 연동 객체 생성
 	private Connection conn = null;
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
 	
-	// 데이터베이스 연동 메서드 생성
 	private void getConnection() {
 		
 		try {
+			
 			Context initctx = new InitialContext();
 			Context envctx = (Context) initctx.lookup("java:comp/env");
 			DataSource ds = (DataSource) envctx.lookup("jdbc/board");
 			conn = ds.getConnection();
-		} catch (Exception e) {
+			
+		} catch(Exception e) {
 			e.printStackTrace();
-		} 
-		
+		}
 	}
 	
-	// 데이터베이스 연동 해지 메서드 생성
 	private void getClose() {
-		if(rs != null) 		try {rs.close();}	catch(Exception e) {e.printStackTrace();}
-		if(pstmt != null) 	try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
-		if(conn != null) 	try {conn.close();}	catch(Exception e) {e.printStackTrace();}
+		
+		if(rs != null) try {rs.close();}catch(Exception e) {e.printStackTrace();}
+		if(pstmt != null) try {pstmt.close();}catch(Exception e) {e.printStackTrace();}
+		if(conn != null) try {conn.close();}catch(Exception e) {e.printStackTrace();}
 	}
 	
-	// 게시글 등록
-	public void insertBoard(BoardDTO boardDTO) {
+	
+	public void insertBoard(BoardDTO boardDTO) { // 이미 뷰로부터 값을 입력받아 BoardDTO 객체에 저장한 상태의 BoardDTO 객체를 파라미터로 받는다.
 		
 		try {
 			getConnection();
 			
 			String sql = """
 					INSERT INTO BOARD
-					VALUES ( ? , ? , ? , ? , ? , 0 , NOW())
+					VALUES (? , ? , ? , ? , ? , 0 , NOW())
 					""";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -67,6 +63,7 @@ public class BoardDAO {
 			pstmt.setString(5, boardDTO.getContent());
 			pstmt.executeUpdate();
 			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -74,7 +71,6 @@ public class BoardDAO {
 		}
 	}
 	
-	// 게시글 조회
 	public ArrayList<BoardDTO> getBoardList() {
 		
 		ArrayList<BoardDTO> boardList = new ArrayList<BoardDTO>();
@@ -82,33 +78,48 @@ public class BoardDAO {
 		try {
 			getConnection();
 			
-			pstmt = conn.prepareStatement("SELECT * FROM BOARD");
+			String sql = """
+					SELECT  *
+					FROM	BOARD
+					""";
+			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			
+		
+			BoardDTO boardDTO = new BoardDTO();
 			while(rs.next()) {
-				BoardDTO boardDTO = new BoardDTO();
 				boardDTO.setBoardId(rs.getLong("BOARD_ID"));
 				boardDTO.setWriter(rs.getString("WRITER"));
-				boardDTO.setContent(rs.getString("CONTENT"));
-				boardDTO.setEmail(rs.getString("EMAIL"));
+				boardDTO.setEnrollDt(rs.getDate("ENROLL_DT"));
 				boardDTO.setSubject(rs.getString("SUBJECT"));
 				boardDTO.setReadCnt(rs.getLong("READ_CNT"));
+				
+				boardList.add(boardDTO);
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			getClose();
 		}
 		
+		System.out.println("boadList : "+ boardList);
+		
 		return boardList;
+		
 	}
 	
 	public BoardDTO getBoardDetail(long boardId) {
 		
 		BoardDTO boardDTO = new BoardDTO();
 		
-		
+		try {
+			getConnection();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			getClose();
+		}
 		
 		return boardDTO;
 	}
+	
 }
