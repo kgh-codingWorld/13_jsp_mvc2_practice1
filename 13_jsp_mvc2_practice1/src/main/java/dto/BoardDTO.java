@@ -10,7 +10,7 @@ public class BoardDTO {
 	private String subject;
 	private String password;
 	private String content;
-	private int readCnt;
+	private long readCnt;
 	private Date enrollDt;
 	
 	
@@ -50,10 +50,10 @@ public class BoardDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public int getReadCnt() {
+	public long getReadCnt() {
 		return readCnt;
 	}
-	public void setReadCnt(int readCnt) {
+	public void setReadCnt(long readCnt) {
 		this.readCnt = readCnt;
 	}
 	public Date getEnrollDt() {

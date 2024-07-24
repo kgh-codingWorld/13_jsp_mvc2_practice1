@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -71,5 +72,43 @@ public class BoardDAO {
 		} finally {
 			getClose();
 		}
+	}
+	
+	// 게시글 조회
+	public ArrayList<BoardDTO> getBoardList() {
+		
+		ArrayList<BoardDTO> boardList = new ArrayList<BoardDTO>();
+		
+		try {
+			getConnection();
+			
+			pstmt = conn.prepareStatement("SELECT * FROM BOARD");
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardDTO boardDTO = new BoardDTO();
+				boardDTO.setBoardId(rs.getLong("BOARD_ID"));
+				boardDTO.setWriter(rs.getString("WRITER"));
+				boardDTO.setContent(rs.getString("CONTENT"));
+				boardDTO.setEmail(rs.getString("EMAIL"));
+				boardDTO.setSubject(rs.getString("SUBJECT"));
+				boardDTO.setReadCnt(rs.getLong("READ_CNT"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			getClose();
+		}
+		
+		return boardList;
+	}
+	
+	public BoardDTO getBoardDetail(long boardId) {
+		
+		BoardDTO boardDTO = new BoardDTO();
+		
+		
+		
+		return boardDTO;
 	}
 }
