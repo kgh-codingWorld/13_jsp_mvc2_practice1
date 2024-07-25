@@ -113,6 +113,13 @@ public class BoardDAO {
 		
 		try {
 			getConnection();
+			
+			String sql = """
+					SELECT	*
+					FROM	BOARD
+					WHERE	BOARD_ID = ?
+					""";
+			pstmt = conn.prepareStatement(sql);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
