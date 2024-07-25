@@ -127,9 +127,11 @@ public class BoardDAO {
 				
 				boardDTO.setBoardId(rs.getLong("BOARD_ID"));
 				boardDTO.setWriter(rs.getString("WRITER"));
-				boardDTO.setSubject(rs.getString("Subject"));
+				boardDTO.setSubject(rs.getString("SUBJECT"));
 				boardDTO.setContent(rs.getString("CONTENT"));
 				boardDTO.setEnrollDt(rs.getDate("ENROLL_DT"));
+				boardDTO.setEmail(rs.getString("EMAIL"));
+				boardDTO.setReadCnt(rs.getLong("READ_CNT"));
 			}
 			
 		} catch(Exception e) {
@@ -141,4 +143,35 @@ public class BoardDAO {
 		return boardDTO;
 	}
 	
+	public boolean checkAuthentication(BoardDTO boardDTO) {
+		
+		boolean isChecked = false;
+		
+		try {
+			
+			getConnection();
+			
+			String sql = """
+					SELECT	*
+					FROM	BOARD
+					WHERE	BOARD_ID = ?
+					AND		PASSWORD = ?
+					""";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, boardDTO.getBoardId());
+			pstmt.setString(2, boardDTO.getPassword());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				isChecked = true;
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			getClose();
+		}
+		return isChecked;
+	}
 }
