@@ -120,6 +120,18 @@ public class BoardDAO {
 					WHERE	BOARD_ID = ?
 					""";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, boardId);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				boardDTO.setBoardId(rs.getLong("BOARD_ID"));
+				boardDTO.setWriter(rs.getString("WRITER"));
+				boardDTO.setSubject(rs.getString("Subject"));
+				boardDTO.setContent(rs.getString("CONTENT"));
+				boardDTO.setEnrollDt(rs.getDate("ENROLL_DT"));
+			}
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
