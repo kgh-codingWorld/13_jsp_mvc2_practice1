@@ -174,4 +174,27 @@ public class BoardDAO {
 		}
 		return isChecked;
 	}
+	
+	public void upadateBoard(BoardDTO boardDTO) {
+		
+		try {
+			getConnection();
+			
+			String sql = """
+					UPDATE BOARD
+					SET    SUBJECT  = ? ,
+						   CONTENT  = ?
+				    WHERE  BOARD_ID = ?
+					""";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, boardDTO.getSubject());
+			pstmt.setString(2, boardDTO.getContent());
+			pstmt.setLong(3, boardDTO.getBoardId());
+			
+		} catch(Exception e)	 {
+			e.printStackTrace();
+		} finally {
+			getClose();
+		}
+	}
 }

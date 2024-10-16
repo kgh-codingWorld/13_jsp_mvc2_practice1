@@ -8,6 +8,7 @@
 </head>
 <body>
 	<div align="center">
+	<form action="authentication">
 		<table border="1">
 			<tr>
 				<td>번호</td>
@@ -38,6 +39,7 @@
 				</td>
 			</tr>
 		</table>
+		</form>
 	</div>
 </body>
 </html>

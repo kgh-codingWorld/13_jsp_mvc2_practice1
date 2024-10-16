@@ -21,7 +21,7 @@
 				<tr>
 				<td>${boardDTO.boardId}</td>
 				<td>${boardDTO.writer}</td>
-				<td><a href="detail?boardId=${boardDTO.boardId}">${boardDTO.subject}</td>
+				<td><a href="detail?boardId=${boardDTO.boardId}">${boardDTO.subject}</a></td>
 				<td>${boardDTO.enrollDt}</td>
 				<td>${boardDTO.readCnt}</td>
 				</tr>
